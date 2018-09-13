@@ -1,0 +1,86 @@
+/*
+	Assignment 2a: More SQL: Aggregates
+	Statement :  Intermediate SQL: Aggregates and grouping and ordering
+*/
+
+
+/* 	
+	Query 1: 
+   	Find the number of instructors who have never taught any course. 
+   	If the result of your query is empty, add appropriate data 
+   	(and include corresponding insert statements) to ensure the 
+   	result is not empty.
+*/
+
+select distinct instructor.ID
+from instructor 	left join teaches on instructor.ID = teaches.ID
+where teaches.ID is NULL
+; 
+
+/*
+	Query 2:
+	Find the total capacity of every building in the university.
+*/
+
+select building, sum(capacity) as buil_capacity
+from classroom 
+group by building
+;
+
+/*
+	Query 3:
+	Find the maximum number of teachers for any single course section.  Your output should be a single number.  For example if CS-101 		section 1 in Spring 2012 had 3 instructors teaching the course, and no other section had more instructors teaching the section, your 		answer would be 3.
+*/
+
+select max(x.ins_count) max_ins_count
+from
+	 (select count(ID) as ins_count 
+	  from teaches 
+	  group by course_id, sec_id, semester, year) as x
+;
+
+/*
+	Query 4:
+	Find all departments that have at least one instructor, and list the names of the departments along with the number of instructors;   		order the result in descending order of number of instructors. 
+*/
+
+select dept_name, count(ID) as ins_count
+from instructor group by dept_name	
+order by ins_count desc
+;
+
+/*
+	Query 5:
+	As in the previous question, but this time you should include departments even if they do not have any instructor, with the count as 0.
+*/	
+
+select department.dept_name, count(ID) as ins_count
+from department left join instructor on department.dept_name = instructor.dept_name group by department.dept_name
+order by ins_count desc
+;
+
+/*
+	Query 6:
+	For each student, compute the total credits they have successfully completed, i.e. total credits of courses they have taken, for which 		they have a non-null grade other than 'F'. Do NOT use the tot_creids attribute of student.
+*/
+
+
+select ID, sum(credits) as total_credits
+from takes natural join course
+where grade is not NULL and grade != 'F'
+group by ID
+;
+
+/*
+	Query 7:
+	Find the number of students who have been taught (at any time) by an instructor named 'Srinivasan'. Make sure you count a student only 		once even if the student has taken more than one course from Srinivasan.
+*/
+
+select count(distinct takes.ID) as cnt
+from
+	(select course_id, sec_id, semester, year 
+	 from teaches natural join instructor
+	 where name = 'Srinivasan') as x natural join takes
+;
+
+

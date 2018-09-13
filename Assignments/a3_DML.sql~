@@ -1,0 +1,11 @@
+delete from assistant;
+insert into assistant values ('00128', 'CS-101', '1', 'Fall', '2009');
+insert into assistant values ('12345', 'CS-101', '1', 'Fall', '2009');
+insert into assistant values ('12345', 'CS-347', '1', 'Fall', '2009');
+insert into assistant values ('19991', 'FIN-201', '1', 'Spring', '2010');
+
+
+insert into advisor values ('12345', '45565');
+insert into advisor values ('12345', '76543');
+insert into advisor values ('12345', '98345');
+

@@ -1,0 +1,19 @@
+/*
+	Each offering of a course (i.e. a section) can have many Teaching assistants; 
+	each teaching assistant is a student.  Extend the existing schema(Add/Alter tables) 
+	to accommodate this requirement.
+*/
+drop table assistant;
+create table assistant 
+	(
+	 ID			varchar(5), 
+	 course_id		varchar(8),
+	 sec_id		varchar(8), 
+	 semester		varchar(6),
+	 year			numeric(4,0),
+	 primary key (ID, course_id, sec_id, semester, year),
+	 foreign key (ID) references student (ID) on delete cascade,
+	 foreign key (course_id, sec_id, semester, year) references section (course_id, sec_id, semester, year) on delete cascade
+	);
+
+					
